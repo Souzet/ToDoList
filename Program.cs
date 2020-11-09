@@ -10,6 +10,12 @@ namespace ToDoList
 {
     class Program
     {
+        class Activity
+        {
+            public string date;
+            public string status;
+            public string title;
+        }
         static void Main(string[] args)
         {
             // 1Declaration:
@@ -34,10 +40,22 @@ namespace ToDoList
                     Console.WriteLine("Reading file {0}", commandWord[1]);
                     using (StreamReader sr = new StreamReader(commandWord[1]))
                     {
-                        while(sr.Peek() >= 0)  // Is next char an Endoffile sign?
+                        while (sr.Peek() >= 0)  // Is next char an Endoffile sign?
                         {
                             string line = sr.ReadLine();
-                            Console.WriteLine("{0}", line);
+                            //Console.WriteLine("{0}", line);
+                            string[] lword = line.Split('#');
+                            //string date = lword[0];
+                            //string status = lword[1];
+                            //string title = lword[2];
+                            // fas 2
+                            Activity A = new Activity()
+                            {
+                                date = lword[0],
+                                status = lword[1],
+                                title = lword[2]
+                            };
+                            Console.WriteLine("{0} - [1} - {2}", A.date, A.status, A.title);
                         }
                     }
                 }
