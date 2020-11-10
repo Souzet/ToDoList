@@ -15,15 +15,22 @@ namespace ToDoList
             public string date;
             public string status;
             public string title;
+            public Activity(string D, string S, string T)
+            {
+                date = D; status = S; title = T;
+            }
+            //NYT: public void Print  skriver en rad
         }
         static void Main(string[] args)
-        {
-            // 1Declaration:
-            string command;
-            string[] commandWord;   //3
+        {            
             // 3Greetings:
             Console.WriteLine("Hello and welcome todo list");
             Console.WriteLine("To quit type 'quit', for help type 'help'!");
+            // 1Declaration:
+            string command;
+            string[] commandWord;   //3
+            List<Activity> todoList;
+
             // 2REPL (do-while-loop)
             do
             {
@@ -38,26 +45,7 @@ namespace ToDoList
                 else if (commandWord[0] == "load")
                 {
                     Console.WriteLine("Reading file {0}", commandWord[1]);
-                    using (StreamReader sr = new StreamReader(commandWord[1]))
-                    {
-                        while (sr.Peek() >= 0)  // Is next char an Endoffile sign?
-                        {
-                            string line = sr.ReadLine();
-                            //Console.WriteLine("{0}", line);
-                            string[] lword = line.Split('#');
-                            //string date = lword[0];
-                            //string status = lword[1];
-                            //string title = lword[2];
-                            // fas 2
-                            Activity A = new Activity()
-                            {
-                                date = lword[0],
-                                status = lword[1],
-                                title = lword[2]
-                            };
-                            Console.WriteLine("{0} - [1} - {2}", A.date, A.status, A.title);
-                        }
-                    }
+                    todoList= ReadToDoListFile(commandWord[1]);
                 }
                 else
                 {
@@ -65,6 +53,24 @@ namespace ToDoList
                 }
             }
             while (command != "quit");
+        }
+
+        private static List<Activity> ReadTodoListFile(string fileName)
+        {
+            List<Activity> todoList = new List<Activity>();
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                while (sr.Peek() >= 0)  // Is next char an Endoffile sign?
+                {
+                    string[] lword = sr.ReadLine().Split('#');
+                    // fas 2
+                    Activity A = new Activity(lword[0],lword[1], lword[2]);
+                   
+                   // Console.WriteLine("{0} - [1} - {2}", A.date, A.status, A.title);
+                    todoList.Add(A);
+                }
+            }
+            return todoList;
         }
     }
 }
